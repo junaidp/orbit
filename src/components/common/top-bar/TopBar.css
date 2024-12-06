@@ -1,0 +1,27 @@
+.navbar-toggler {
+  cursor: pointer !important;
+}
+.left-300 {
+  left: -300px !important;
+}
+
+.smallScreenToolBar {
+  display: none !important;
+}
+.logoutOut-btn-dashboard {
+  display: none !important;
+  width: 120px !important;
+}
+
+@media screen and (max-width: 990px) {
+  .bigScreenToolBar {
+    display: none !important;
+  }
+  .logoutOut-btn-dashboard {
+    display: block !important;
+  }
+
+  .smallScreenToolBar {
+    display: block !important;
+  }
+}
