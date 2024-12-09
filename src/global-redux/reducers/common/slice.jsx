@@ -1,19 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { faBuilding } from "@fortawesome/free-solid-svg-icons";
+import { faBuilding, faFilter } from "@fortawesome/free-solid-svg-icons";
 
 let menuItems = [
   {
-    id: "li-home",
+    id: "home",
     label: "Company Setup",
     icon: faBuilding,
     route: "/",
+    active: true,
+  },
+  {
+    id: "incentive-setup",
+    label: "Incentive Setup",
+    icon: faFilter,
+    route: "/incentive-setup",
     active: true,
   },
 ];
 
 const initialState = {
   showSidebar: true,
-  activeLink: "li-home",
+  activeLink: "home",
   activeExpandId: "li-audit",
   menuItems: menuItems,
   drawerState: false,
@@ -29,9 +36,22 @@ export const slice = createSlice({
         state.drawerState = !state.drawerState;
       }
     },
+
+    changeActiveLink: (state, action) => {
+      state.activeLink = action.payload;
+    },
+    InitialLoadSidebarActiveLink: (state, action) => {
+      state.menuItems = state.menuItems.map((item) =>
+        item?.id === action.payload ? { ...item, open: true } : item
+      );
+    },
   },
 });
 
-export const { changeShowSidebar } = slice.actions;
+export const {
+  changeShowSidebar,
+  changeActiveLink,
+  InitialLoadSidebarActiveLink,
+} = slice.actions;
 
 export default slice.reducer;

@@ -1,11 +1,15 @@
 import React from "react";
 import "./Sidebar.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
+import { changeActiveLink } from "../../../global-redux/reducers/common/slice";
 
 import SmallScreenSidebar from "./SmallScreenSidebar";
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isWidthLessThan990, setIsWidthLessThan990] = React.useState(
     window.innerWidth < 990
   );
@@ -41,7 +45,7 @@ const Sidebar = () => {
               data-simplebar=""
             >
               <ul id="sidebarnav" className="mt-5">
-                {menuItems?.slice(-2)?.map((item, index) => {
+                {menuItems?.map((item, index) => {
                   return (
                     <div key={index}>
                       <div
@@ -50,6 +54,10 @@ const Sidebar = () => {
                             ? "link-wrap"
                             : "link-wrap-active"
                         }
+                        onClick={() => {
+                          dispatch(changeActiveLink(item?.id));
+                          navigate(item?.route);
+                        }}
                       >
                         <FontAwesomeIcon icon={item?.icon} />
 
