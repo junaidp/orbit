@@ -16,6 +16,13 @@ let menuItems = [
     route: "/incentive-setup",
     active: true,
   },
+  {
+    id: "FileUpload",
+    label: "File Upload",
+    icon: faFilter,
+    route: "/FileUpload",
+    active: true,
+  },
 ];
 
 const initialState = {
