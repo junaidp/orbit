@@ -1,8 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { faBuilding, faFilter } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBuilding,
+  faFilter,
+  faUpload,
+  faFile,
+  faHouse,
+} from "@fortawesome/free-solid-svg-icons";
 
 let menuItems = [
- 
   {
     id: "incentive-setup",
     label: "Incentive Setup",
@@ -11,43 +16,40 @@ let menuItems = [
     active: true,
   },
   {
-    id: "FileUpload",
+    id: "file-upload",
     label: "File Upload",
-    icon: faFilter,
-    route: "/FileUpload",
+    icon: faUpload,
+    route: "/file-upload",
     active: true,
   },
   {
-    id: "Referral Form",
+    id: "referral-form",
     label: "Referral Form",
-    icon: faFilter,
-    route: "/ReferralForm",
+    icon: faFile,
+    route: "/referral-form",
     active: true,
   },
-
   {
-    id: "Company",
+    id: "company",
     label: "Company",
-    icon: faFilter,
-    route: "/company",
+    icon: faBuilding,
     active: true,
-    children: [
+    open: false,
+    subMenu: [
       {
-        id: "CompnySetup1",
+        id: "company-setup-1",
         label: "Company Setup1",
-        icon: faFilter,
-        route: "/CompnySetup1",
-        active: true,
+        icon: faHouse,
+        route: "/company-setup-1",
+        active: false,
       },
       {
-        id: "home",
+        id: "company-setup",
         label: "Company Setup",
         icon: faBuilding,
         route: "/",
-        active: true,
+        active: false,
       },
-    
-      
     ],
   },
 ];
@@ -70,24 +72,31 @@ export const sidebarSlice = createSlice({
         state.drawerState = !state.drawerState;
       }
     },
+
     changeActiveLink: (state, action) => {
       state.activeLink = action.payload;
     },
-    toggleExpand: (state, action) => {
-      state.activeExpandId = state.activeExpandId === action.payload ? "" : action.payload;
-    },
+
     InitialLoadSidebarActiveLink: (state, action) => {
       state.menuItems = state.menuItems.map((item) =>
         item?.id === action.payload ? { ...item, open: true } : item
       );
+    },
+    changeExpanded: (state, action) => {
+      state.activeExpandId = action.payload;
+      if (action.payload === "company") {
+        state.menuItems = state.menuItems.map((all) => {
+          return all?.id === "company" ? { ...all, open: !all?.open } : all;
+        });
+      }
     },
   },
 });
 
 export const {
   changeShowSidebar,
+  changeExpanded,
   changeActiveLink,
-  toggleExpand,
   InitialLoadSidebarActiveLink,
 } = sidebarSlice.actions;
 

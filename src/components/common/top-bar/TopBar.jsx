@@ -18,13 +18,17 @@ const TopBar = () => {
         <div className="d-flex gap-4">
           <div
             className="cursor-pointer"
-            onClick={() => dispatch(changeShowSidebar(false))}
+            onClick={() => {
+              dispatch(changeShowSidebar(false));
+            }}
           >
             <FontAwesomeIcon icon={faArrowLeft} />
           </div>
           <div
             className="cursor-pointer"
-            onClick={() => dispatch(changeShowSidebar(true))}
+            onClick={() => {
+              dispatch(changeShowSidebar(true));
+            }}
           >
             <FontAwesomeIcon icon={faArrowRight} />
           </div>
@@ -33,7 +37,9 @@ const TopBar = () => {
           <div className="d-flex align-items-center justify-content-between">
             <div
               className="cursor-pointer"
-              onClick={() => dispatch(changeShowSidebar(false))}
+              onClick={() => {
+                dispatch(changeShowSidebar(false));
+              }}
             >
               <FontAwesomeIcon icon={faXmark} />
             </div>

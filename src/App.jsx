@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "./components/common/not-found/index";
+import { ToastContainer } from "react-toastify";
 import Home from "./pages/home";
 import Layout from "./components/common/layout/Layout";
 import IncentiveSetup from "./pages/incentive-setup";
-import FileUpload from "./pages/FileUpload";
-import ReferralForm from "./pages/ReferralForm";
-import CompnySetup1 from "./pages/CompnySetup1";
+import FileUpload from "./pages/file-upload";
+import ReferralForm from "./pages/referral-form";
+import CompnySetup1 from "./pages/company-setup-1";
+import "react-toastify/dist/ReactToastify.css";
 
 import {
   changeActiveLink,
@@ -38,18 +40,19 @@ const App = () => {
       });
     }
   }, [dispatch]);
+
   return (
     <div>
+      <ToastContainer position="bottom-right" />
+
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="/" index element={<Home />} />
             <Route path="/incentive-setup" index element={<IncentiveSetup />} />
-            <Route path="/FileUpload" index element={<FileUpload />} />
-            <Route path="/file-upload" component={FileUpload} />
-            <Route path="/ReferralForm" index element={<ReferralForm />} />
-            <Route path="/CompnySetup1" index element={<CompnySetup1 />} />
-
+            <Route path="/file-upload" index element={<FileUpload />} />
+            <Route path="/referral-form" index element={<ReferralForm />} />
+            <Route path="/company-setup-1" index element={<CompnySetup1 />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

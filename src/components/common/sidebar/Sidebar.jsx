@@ -1,23 +1,41 @@
 import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import { changeActiveLink } from "../../../global-redux/reducers/common/slice";
+import {
+  changeActiveLink,
+  changeExpanded,
+} from "../../../global-redux/reducers/common/slice";
 
 import SmallScreenSidebar from "./SmallScreenSidebar";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { showSidebar, menuItems, activeLink } = useSelector(
+    (state) => state?.common
+  );
   const [isWidthLessThan990, setIsWidthLessThan990] = useState(
     window.innerWidth < 990
   );
-  const [expandedSections, setExpandedSections] = useState({});
-  const { showSidebar, activeLink, menuItems } = useSelector(
-    (state) => state.common
-  );
+
+  function handleMainItemClick(link, id) {
+    if (link) {
+      navigate(link);
+    }
+    dispatch(changeActiveLink(id));
+
+    if (id === "company") {
+      dispatch(changeExpanded("company"));
+    }
+  }
+
+  function handleSubItemClick(link, id) {
+    navigate(link);
+    dispatch(changeActiveLink(id));
+  }
 
   useEffect(() => {
     function handleResize() {
@@ -28,13 +46,6 @@ const Sidebar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  const handleToggleExpand = (id) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
 
   return (
     <div>
@@ -54,62 +65,69 @@ const Sidebar = () => {
               data-simplebar=""
             >
               <ul id="sidebarnav" className="mt-5">
-                {menuItems?.map((item, index) => (
-                  <div key={index}>
-                    {/* Parent Menu Item */}
-                    <div
-                      className={
-                        activeLink !== item?.id
-                          ? "link-wrap"
-                          : "link-wrap-active"
-                      }
-                      onClick={() => {
-                        if (item?.children) {
-                          handleToggleExpand(item?.id);
-                        } else {
-                          dispatch(changeActiveLink(item?.id));
-                          navigate(item?.route);
+                {menuItems?.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <div
+                        className={
+                          activeLink !== item?.id
+                            ? "link-wrap"
+                            : "link-wrap-active"
                         }
-                      }}
-                    >
-                      <FontAwesomeIcon icon={item?.icon} />
-                      <ul>
-                        <li>
-                          <a>
-                            <span>{item?.label}</span>
-                            {item?.children && (
-                              <span className="expand-icon">
-                                {expandedSections[item?.id] ? "▼" : "▶"}
-                              </span>
-                            )}
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-
-                    {/* Sub-menu Items */}
-                    {item?.children && expandedSections[item?.id] && (
-                      <ul className="sub-menu">
-                        {item.children.map((child) => (
-                          <li
-                            key={child.id}
-                            className={
-                              activeLink === child.id
-                                ? "sub-menu-item-active"
-                                : "sub-menu-item"
-                            }
-                            onClick={() => {
-                              dispatch(changeActiveLink(child.id));
-                              navigate(child.route);
-                            }}
-                          >
-                            {child.label}
+                        onClick={() =>
+                          handleMainItemClick(item?.route, item?.id)
+                        }
+                      >
+                        <FontAwesomeIcon icon={item?.icon} />
+                        <ul>
+                          <li>
+                            <a>
+                              <span>{item?.label}</span>
+                            </a>
                           </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                ))}
+                        </ul>
+                        {item?.id === "company" && (
+                          <i
+                            className="fa fa-angle-down cheveron-icon"
+                            id={item?.open ? "animate" : "non-animate"}
+                            aria-hidden="true"
+                          ></i>
+                        )}
+                      </div>
+                      {item?.subMenu &&
+                        item?.subMenu?.map((subItem) => {
+                          return (
+                            <div
+                              key={subItem?.id}
+                              className={`sub-link-wrap ${
+                                item?.open === false && "sub-link-wrap-close"
+                              }`}
+                              onClick={() =>
+                                handleSubItemClick(subItem?.route, subItem?.id)
+                              }
+                            >
+                              <div
+                                className={
+                                  activeLink !== subItem?.id
+                                    ? "link-wrap"
+                                    : "link-wrap-active"
+                                }
+                              >
+                                <FontAwesomeIcon icon={subItem?.icon} />
+                                <ul>
+                                  <li>
+                                    <a>
+                                      <span>{subItem?.label}</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  );
+                })}
               </ul>
             </nav>
           </div>
