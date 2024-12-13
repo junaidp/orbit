@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Sidebar.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,17 +7,19 @@ import { useNavigate } from "react-router-dom";
 import { changeActiveLink } from "../../../global-redux/reducers/common/slice";
 
 import SmallScreenSidebar from "./SmallScreenSidebar";
+
 const Sidebar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isWidthLessThan990, setIsWidthLessThan990] = React.useState(
+  const [isWidthLessThan990, setIsWidthLessThan990] = useState(
     window.innerWidth < 990
   );
-  let { showSidebar, activeLink, menuItems } = useSelector(
+  const [expandedSections, setExpandedSections] = useState({});
+  const { showSidebar, activeLink, menuItems } = useSelector(
     (state) => state.common
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     function handleResize() {
       setIsWidthLessThan990(window.innerWidth < 990);
     }
@@ -26,6 +28,13 @@ const Sidebar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleToggleExpand = (id) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   return (
     <div>
@@ -45,33 +54,62 @@ const Sidebar = () => {
               data-simplebar=""
             >
               <ul id="sidebarnav" className="mt-5">
-                {menuItems?.map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <div
-                        className={
-                          activeLink !== item?.id
-                            ? "link-wrap"
-                            : "link-wrap-active"
-                        }
-                        onClick={() => {
+                {menuItems?.map((item, index) => (
+                  <div key={index}>
+                    {/* Parent Menu Item */}
+                    <div
+                      className={
+                        activeLink !== item?.id
+                          ? "link-wrap"
+                          : "link-wrap-active"
+                      }
+                      onClick={() => {
+                        if (item?.children) {
+                          handleToggleExpand(item?.id);
+                        } else {
                           dispatch(changeActiveLink(item?.id));
                           navigate(item?.route);
-                        }}
-                      >
-                        <FontAwesomeIcon icon={item?.icon} />
-
-                        <ul>
-                          <li>
-                            <a>
-                              <span>{item?.label}</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
+                        }
+                      }}
+                    >
+                      <FontAwesomeIcon icon={item?.icon} />
+                      <ul>
+                        <li>
+                          <a>
+                            <span>{item?.label}</span>
+                            {item?.children && (
+                              <span className="expand-icon">
+                                {expandedSections[item?.id] ? "▼" : "▶"}
+                              </span>
+                            )}
+                          </a>
+                        </li>
+                      </ul>
                     </div>
-                  );
-                })}
+
+                    {/* Sub-menu Items */}
+                    {item?.children && expandedSections[item?.id] && (
+                      <ul className="sub-menu">
+                        {item.children.map((child) => (
+                          <li
+                            key={child.id}
+                            className={
+                              activeLink === child.id
+                                ? "sub-menu-item-active"
+                                : "sub-menu-item"
+                            }
+                            onClick={() => {
+                              dispatch(changeActiveLink(child.id));
+                              navigate(child.route);
+                            }}
+                          >
+                            {child.label}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                ))}
               </ul>
             </nav>
           </div>

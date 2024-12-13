@@ -2,13 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { faBuilding, faFilter } from "@fortawesome/free-solid-svg-icons";
 
 let menuItems = [
-  {
-    id: "home",
-    label: "Company Setup",
-    icon: faBuilding,
-    route: "/",
-    active: true,
-  },
+ 
   {
     id: "incentive-setup",
     label: "Incentive Setup",
@@ -23,18 +17,51 @@ let menuItems = [
     route: "/FileUpload",
     active: true,
   },
+  {
+    id: "Referral Form",
+    label: "Referral Form",
+    icon: faFilter,
+    route: "/ReferralForm",
+    active: true,
+  },
+
+  {
+    id: "Company",
+    label: "Company",
+    icon: faFilter,
+    route: "/company",
+    active: true,
+    children: [
+      {
+        id: "CompnySetup1",
+        label: "Company Setup1",
+        icon: faFilter,
+        route: "/CompnySetup1",
+        active: true,
+      },
+      {
+        id: "home",
+        label: "Company Setup",
+        icon: faBuilding,
+        route: "/",
+        active: true,
+      },
+    
+      
+    ],
+  },
 ];
 
 const initialState = {
   showSidebar: true,
   activeLink: "home",
-  activeExpandId: "li-audit",
+  activeExpandId: "",
   menuItems: menuItems,
   drawerState: false,
 };
 
-export const slice = createSlice({
-  name: "common",
+export const sidebarSlice = createSlice({
+  name: "sidebar",
   initialState,
   reducers: {
     changeShowSidebar: (state, action) => {
@@ -43,9 +70,11 @@ export const slice = createSlice({
         state.drawerState = !state.drawerState;
       }
     },
-
     changeActiveLink: (state, action) => {
       state.activeLink = action.payload;
+    },
+    toggleExpand: (state, action) => {
+      state.activeExpandId = state.activeExpandId === action.payload ? "" : action.payload;
     },
     InitialLoadSidebarActiveLink: (state, action) => {
       state.menuItems = state.menuItems.map((item) =>
@@ -58,7 +87,8 @@ export const slice = createSlice({
 export const {
   changeShowSidebar,
   changeActiveLink,
+  toggleExpand,
   InitialLoadSidebarActiveLink,
-} = slice.actions;
+} = sidebarSlice.actions;
 
-export default slice.reducer;
+export default sidebarSlice.reducer;

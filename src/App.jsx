@@ -6,6 +6,9 @@ import Home from "./pages/home";
 import Layout from "./components/common/layout/Layout";
 import IncentiveSetup from "./pages/incentive-setup";
 import FileUpload from "./pages/FileUpload";
+import ReferralForm from "./pages/ReferralForm";
+import CompnySetup1 from "./pages/CompnySetup1";
+
 import {
   changeActiveLink,
   InitialLoadSidebarActiveLink,
@@ -44,6 +47,9 @@ const App = () => {
             <Route path="/incentive-setup" index element={<IncentiveSetup />} />
             <Route path="/FileUpload" index element={<FileUpload />} />
             <Route path="/file-upload" component={FileUpload} />
+            <Route path="/ReferralForm" index element={<ReferralForm />} />
+            <Route path="/CompnySetup1" index element={<CompnySetup1 />} />
+
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
