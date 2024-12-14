@@ -4,7 +4,7 @@ const IncentiveSetup = () => {
   return (
     <div>
       <div className="row">
-        <div className="col-lg-4">
+        <div className="col-lg-4 mb-4">
           <input className="form-control h-40" placeholder="Campaign name" />
           <div className="d-flex gap-4 mt-2">
             <input
@@ -55,7 +55,7 @@ const IncentiveSetup = () => {
             </div>
           </div>
         </div>
-        <div className="col-lg-4">
+        <div className="col-lg-4 mb-4">
           <h1 className="heading">INCENTIVE</h1>
           <div>
             <div className="d-flex gap-2  item-center">
@@ -80,7 +80,7 @@ const IncentiveSetup = () => {
             </div>
           </div>
         </div>
-        <div className="col-lg-4">
+        <div className="col-lg-4 mb-4">
           <h1 className="heading">BUYER INCENTIVE</h1>
           <div>
             <textarea

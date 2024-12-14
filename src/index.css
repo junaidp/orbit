@@ -755,10 +755,10 @@ span[aria-label="Insert Ordered List"] .jodit-toolbar-button__trigger {
   overflow-x: auto;
 }
 
-#SideComponents > div:first-child {
+/* #SideComponents > div:first-child {
   min-width: 500px;
   overflow-x: auto;
-}
+} */
 
 #smallScreenSidebar {
   display: none !important;
@@ -866,5 +866,13 @@ span[aria-label="Insert Ordered List"] .jodit-toolbar-button__trigger {
   }
   .navbarWrapMain {
     padding: 12px !important;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #SideComponents {
+    width: 95% !important;
+    margin-left: 2% !important;
+    margin-right: 2% !important;
   }
 }
