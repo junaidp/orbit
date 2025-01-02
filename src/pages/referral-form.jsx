@@ -21,7 +21,14 @@ const ReferralForm = () => {
   // Fetch data from server
   const fetchReferralData = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/referrals");
+      const response = await axios.get(
+        "https://2660-2a0a-a547-f2a0-0-b8ae-d478-c531-347d.ngrok-free.app/api/referrals",
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
       setReferralData(response.data);
     } catch (error) {
       console.error("Error fetching referral data:", error);
@@ -42,7 +49,15 @@ const ReferralForm = () => {
   // Handle save button
   const handleSave = async () => {
     try {
-      await axios.post("http://localhost:8080/api/referrals", formData);
+      await axios.post(
+        "https://2660-2a0a-a547-f2a0-0-b8ae-d478-c531-347d.ngrok-free.app/api/referrals",
+        formData,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
       alert("Referral data saved successfully!");
       fetchReferralData(); // Refresh the grid after saving
       setFormData({
@@ -173,7 +188,7 @@ const ReferralForm = () => {
       <div style={{ marginTop: "20px" }}></div>
       {/* Referral Data Grid */}
       <div className="tree-item">
-      <div
+        <div
           className="tree-title"
           onClick={() => setIsTreeOpen(!isTreeOpen)}
           style={{
@@ -203,7 +218,7 @@ const ReferralForm = () => {
               </tr>
             </thead>
             <tbody>
-              {referralData.length > 0 ? (
+              {Array.isArray(referralData) && referralData.length > 0 ? (
                 referralData.map((item, index) => (
                   <tr key={index}>
                     <td>{item.companyName || "-"}</td>

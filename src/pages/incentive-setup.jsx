@@ -18,8 +18,15 @@ const IncentiveSetup = () => {
   const fetchIncentiveData = async () => {
     try {
       setLoading(true); // Start loading
-      const response = await axios.get("http://localhost:8080/api/incentives");
-      setIncentiveData(response.data);
+      const response = await axios.get(
+        "https://2660-2a0a-a547-f2a0-0-b8ae-d478-c531-347d.ngrok-free.app/api/incentives",
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
+      setIncentiveData(response.data || []);
     } catch (error) {
       console.error("Error fetching incentive data:", error);
     } finally {
@@ -42,7 +49,15 @@ const IncentiveSetup = () => {
   const handleSave = async () => {
     try {
       setLoading(true); // Start loading
-      await axios.post("http://localhost:8080/api/incentives", formData);
+      await axios.post(
+        "https://2660-2a0a-a547-f2a0-0-b8ae-d478-c531-347d.ngrok-free.app/api/incentives",
+        formData,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
       alert("Incentive saved successfully!");
       await fetchIncentiveData(); // Refresh data instantly
       setFormData({
@@ -118,7 +133,11 @@ const IncentiveSetup = () => {
           </div>
           {/* Save Button */}
           <div className="mt-4">
-            <button onClick={handleSave} className="btn btn-primary" disabled={loading}>
+            <button
+              onClick={handleSave}
+              className="btn btn-primary"
+              disabled={loading}
+            >
               {loading ? "Saving..." : "Save"}
             </button>
           </div>
@@ -126,7 +145,9 @@ const IncentiveSetup = () => {
 
         {/* Middle Column */}
         <div className="col-lg-4 mb-4">
-          <h1 className="heading" style={{ color: "#008080" }}>INCENTIVE</h1>
+          <h1 className="heading" style={{ color: "#008080" }}>
+            INCENTIVE
+          </h1>
           <div>
             <div className="d-flex gap-2 item-center">
               <input
@@ -160,7 +181,9 @@ const IncentiveSetup = () => {
 
         {/* Right Column */}
         <div className="col-lg-4 mb-4">
-          <h1 className="heading" style={{ color: "#008080" }}>BUYER INCENTIVE</h1>
+          <h1 className="heading" style={{ color: "#008080" }}>
+            BUYER INCENTIVE
+          </h1>
           <textarea
             name="buyerIncentive"
             value={formData.buyerIncentive}
@@ -198,7 +221,7 @@ const IncentiveSetup = () => {
               </tr>
             </thead>
             <tbody>
-              {incentiveData.length > 0 ? (
+              {Array.isArray(incentiveData) && incentiveData.length > 0 ? (
                 incentiveData.map((item, index) => (
                   <tr key={index}>
                     <td>{item.campaignName || "-"}</td>

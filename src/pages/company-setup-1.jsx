@@ -18,7 +18,14 @@ const CompnySetp1 = () => {
   // Fetch company details from the server
   const fetchCompanyDetails = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/company/all");
+      const response = await axios.get(
+        "https://2660-2a0a-a547-f2a0-0-b8ae-d478-c531-347d.ngrok-free.app/api/company/all",
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
       setCompanyDetails(response.data); // Store fetched data in state
     } catch (error) {
       console.error("Error fetching company details:", error);
@@ -37,7 +44,15 @@ const CompnySetp1 = () => {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("http://localhost:8080/api/company/save", formData);
+      await axios.post(
+        "https://2660-2a0a-a547-f2a0-0-b8ae-d478-c531-347d.ngrok-free.app/api/company/save",
+        formData,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
       fetchCompanyDetails(); // Immediately refresh table
       alert("Company details saved successfully!");
     } catch (error) {
@@ -119,20 +134,19 @@ const CompnySetp1 = () => {
 
       {/* Company Details Table */}
       <div>
-      
         <div className="tree-item">
-        <div
-          className="tree-title"
-          onClick={() => setIsTreeOpen(!isTreeOpen)}
-          style={{
-            cursor: "pointer",
-            fontWeight: "bold",
-            marginBottom: "10px",
-            color: "#008080",
-          }}
-        >
-          {isTreeOpen ? "▼ Company Details" : "► Company Details"}
-        </div>
+          <div
+            className="tree-title"
+            onClick={() => setIsTreeOpen(!isTreeOpen)}
+            style={{
+              cursor: "pointer",
+              fontWeight: "bold",
+              marginBottom: "10px",
+              color: "#008080",
+            }}
+          >
+            {isTreeOpen ? "▼ Company Details" : "► Company Details"}
+          </div>
           {isTreeOpen && (
             <table className="table table-bordered">
               <thead>
@@ -154,7 +168,7 @@ const CompnySetp1 = () => {
                 </tr>
               </thead>
               <tbody>
-                {companyDetails.length > 0 ? (
+                {Array.isArray(companyDetails) && companyDetails.length > 0 ? (
                   companyDetails.map((company, index) => (
                     <tr key={index}>
                       <td>{company.companyName || "-"}</td>
